@@ -1,33 +1,29 @@
 //import {action, makeObservable, observable} from 'mobx'
-import React, { Component } from 'react'
+//import { extendObservable } from 'mobx'
+import { Component } from 'react'
 
-/*class UserStore
+/*
+class UserStore
 { 
     
     constructor()
     {
-        makeObservable(this, 
+        extendObservable(this, 
         {
-            loading: observable,
-            logged: observable,
-            logIn: action,
-            wrong_un: observable,
-            wrong_pw: observable
+            loading: true,
+            logged: false,
+            wrong_un: false,
+            wrong_pw: false
         })
-
-        this.loading = true
-        this.logged = false
-        this.wrong_un = false
-        this.wrong_pw = false
 
     }
     logIn()
     {
-        this.logged = !this.logged
+        this.logged = true
     }
 
 }*/
-
+/*
 class UserStore extends Component
 {
     constructor(){
@@ -43,6 +39,57 @@ class UserStore extends Component
     LogIn()
     {
         this.setState({logged: true})
+    }
+
+    render()
+    {
+        return
+    }
+}*/
+
+
+class UserStore extends Component
+{
+
+    myStorage = window.sessionStorage
+    constructor()
+    {
+        super()
+        const loggedFromStorage = sessionStorage.getItem('logged')
+        this.state = 
+        {
+            logged: (loggedFromStorage ? loggedFromStorage : false)
+        }
+    }
+
+    SetStore()
+    {
+        console.log('Setting up storage')
+    this.myStorage.clear()
+    this.myStorage.setItem('logged',false)
+    this.myStorage.setItem('loading',false)
+    this.myStorage.setItem('wrong_pw',false)
+    this.myStorage.setItem('wrong_un',false)
+    console.log(`Status of logged after setting up : ${this.myStorage.getItem('logged')}`)
+    }
+    
+    logOut()
+    {
+        this.setState({logged: false})
+        this.myStorage.setItem('logged',false)
+        console.log(`Status of logged : ${this.myStorage.getItem('logged')}`)
+    }
+
+    logIn()
+    {
+        this.setState({logged: true})
+        this.myStorage.setItem('logged',true)
+        console.log(`Status of logged : ${this.myStorage.getItem('logged')}`)
+    }
+
+    returnLogged()
+    {
+        return this.state.logged
     }
 }
 

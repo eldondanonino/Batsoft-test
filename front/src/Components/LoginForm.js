@@ -1,20 +1,28 @@
 import { Component } from 'react'
-import InputFields from './InputField'
+import InputField from './InputField'
 import SubmitButton from './SubmitButton'
-import UserStore from '../Stores/UserStore'
-
 
 class LoginForm extends Component
 {
+
+    componentDidUpdate()
+    {
+        //console.log("LoginForm UPDATED")
+    }
+
     constructor(props)
     {
-        super()
-
+        super(props)
+        this.LogIn = this.LogIn.bind(this)
+        this.SendValues = this.SendValues.bind(this)
+        this.SetValue = this.SetValue.bind(this)
+        this.ResetValue = this.ResetValue.bind(this)
         this.state = 
         {
             username: '',
             password: ''
         }
+
     }
 
     SetValue(property, value)
@@ -39,45 +47,50 @@ class LoginForm extends Component
         )
     }
 
+    LogIn()
+    {
+        this.props.LogIn()
+    }
+
+
     SendValues(username, password) //I will use this to send the values to my backend
     {
-        UserStore.wrong_pw = false
-        UserStore.wrong_un = false
-
+        console.log(`Received : Username : ${username} , Password : ${password}`)
+        if(username === '' && password === '')
+        {
+            console.log("No un and no pw")
+            return
+        }
         if(username === '' || password === '') //I will change that to if the api sent a negative answer
             {
+                console.log(`Username : ${username} , Password : ${password}`)
                 if(username === '') 
                 {
                     console.log("Invalid request : wrong un") 
-                    UserStore.state.wrong_un = true
                 }
                 
                 if(password === '')
                 {
                     console.log("Invalid request : wrong pw") 
-                    UserStore.state.wrong_pw = true
                 }
-                this.ResetValue()
+                //this.ResetValue()
                 return
             }
-        console.log(`Username : ${this.state.username} , Password : ${this.state.password}`)
-        UserStore.LogIn()
-        console.log(UserStore.state.logged)
+        console.log(`Username : ${username} , Password : ${password}`)
+        this.LogIn()
     }
-
 
     render()
     {
+        const username = this.state.username
+        const password = this.state.password
         return(
             <div>
-                <InputFields placeholder = {'username'} type = 'text' value = {this.state.username ? this.state.username : ''} onChange = { (value) => this.SetValue('username', value) }/> 
-                {UserStore.wrong_un ? (<b style = {{color : ' red '}}>Wrong/Inexistant Username</b>) : ''}
-                <InputFields placeholder = {'password'} type = 'password' value = {this.state.password ? this.state.password : ''} onChange = { (value) => this.SetValue('password', value) }/> 
-                {UserStore.wrong_pw ? (<b style = {{color : ' red '}}>Wrong/Inexistant Password</b>) : ''}
-                <SubmitButton text = "Hi :) " onClick = {() => this.SendValues(this.state.username, this.state.password)}/>
+                <InputField placeholder = {'username'} type = 'text' value = {username ? this.state.username : ''} onChange = { (value) => this.SetValue('username', value) }/> 
+                <InputField placeholder = {'password'} type = 'password' value = {password ? this.state.password : ''} onChange = { (value) => this.SetValue('password', value) }/> 
+                <SubmitButton text = "Hi :) " method = {() => this.SendValues(username, password)}/>
             </div>
         )
     }
 }
-
 export default LoginForm
