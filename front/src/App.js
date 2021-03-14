@@ -4,7 +4,6 @@ import { observer } from 'mobx-react'
 import { BrowserRouter as Router, Redirect, Route} from 'react-router-dom'
 import SubmitButton from './Components/SubmitButton'
 import LoginForm from './Components/LoginForm'
-import Logged from './Components/Logged'
 
 class App extends Component{
   constructor()
@@ -17,21 +16,75 @@ class App extends Component{
 
     this.state = {
       login: false,
-      wrong_pw: false,
-      wrong_un: false
+      user: ''
     }
   }
 
-  handleLogIn()
+  async handleLogIn(un, pw)
   {
-    this.setState({login: true})
-    console.log("Loged In!")
+    console.log(`SENDING TO THE API : ${un} + ${pw}`)
+    try
+    {
+      let res = await fetch ('/login', 
+      {
+        method : 'post',
+        headers: {
+          'Accept' : 'application/json',
+          'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify({
+          username : un,
+          password : pw
+        })
+      })
+
+      let result = await res.json()
+      if(result && result.success)
+      {
+        this.setState({user : result.username})
+        console.log(`Login successful, welcome ${this.state.user}`)
+      }
+      else
+      {
+        console.log('Error while logging in (not critical)')
+      }
+    }
+    catch(err)
+    {
+      console.log('ERROR WHILE LOGGING IN')
+    }
   }
   
-  handleLogOut()
+  async handleLogOut()
   {
-    this.setState({login: false})
-    console.log("Loged Out!")
+    /*this.setState({login: false})
+    console.log("Logged Out!")*/
+    try
+    {
+      let res = await fetch ('/logout', 
+      {
+        method : 'post',
+        headers: {
+          'Accept' : 'application/json',
+          'Content-Type' : 'application.json'
+        }
+      })
+
+      let result = await res.json()
+      if(result && result.success)
+      {
+        console.log('Logout successful')
+      }
+      else
+      {
+        console.log('Error while logging out (not critical)')
+      }
+    }
+    catch(err)
+    {
+      console.log('ERROR WHILE LOGGING OUT')
+    }
+
   }
 /*
   handleWrongPw(isTrue)
@@ -53,30 +106,24 @@ class App extends Component{
   }
 */
 
-  componentDidUpdate()
-  {
-    console.log("APP UPDATED")
-  }
 
   render()
   {
     const login = this.state.login
+    //console.log(`login : ${login}`)
     return(
       <Router>
 
 
         <div>
 
-          <h1>
-            <Logged login = {login}/>
-          </h1>
-
           {login === true ? <Redirect push to= "/main-menu"/> : <Redirect push to= "/"/>}
 
           <Route path = '/' exact>   
+          {login === true ? <Redirect push to= "/main-menu"/> : console.log("not logged in") }
           <div>
               <h1>LoginPage</h1> 
-              <LoginForm LogIn = {this.handleLogIn} /*WP = {this.handleWrongPw} WU = {this.handleWrongUn} un = {wu} pw = {wp}*//>
+              <LoginForm LogIn = {this.handleLogIn}/>
           </div>
           </Route>
 

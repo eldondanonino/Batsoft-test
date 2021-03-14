@@ -16,7 +16,7 @@ class Logged extends Component
     render()
     {
         const log = this.props.login
-        console.log(log)
+        console.log(`logged.js : ${log}`)
 
         return(
 

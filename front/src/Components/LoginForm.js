@@ -13,7 +13,6 @@ class LoginForm extends Component
     constructor(props)
     {
         super(props)
-        this.LogIn = this.LogIn.bind(this)
         this.SendValues = this.SendValues.bind(this)
         this.SetValue = this.SetValue.bind(this)
         this.ResetValue = this.ResetValue.bind(this)
@@ -47,37 +46,35 @@ class LoginForm extends Component
         )
     }
 
-    LogIn()
-    {
-        this.props.LogIn()
-    }
-
-
     SendValues(username, password) //I will use this to send the values to my backend
     {
-        console.log(`Received : Username : ${username} , Password : ${password}`)
-        if(username === '' && password === '')
+        console.log(`Received :\n Username : ${username} , Password : ${password}`)
+        if(!username && !password)
         {
             console.log("No un and no pw")
             return
         }
-        if(username === '' || password === '') //I will change that to if the api sent a negative answer
+        if(!username || !password )
             {
-                console.log(`Username : ${username} , Password : ${password}`)
-                if(username === '') 
+                if(!username) 
                 {
                     console.log("Invalid request : wrong un") 
                 }
                 
-                if(password === '')
+                if(!password)
                 {
                     console.log("Invalid request : wrong pw") 
                 }
-                //this.ResetValue()
+                this.ResetValue()
                 return
             }
-        console.log(`Username : ${username} , Password : ${password}`)
-        this.LogIn()
+        
+        try{
+            console.log(`Sending to the APP : \nUsername : ${username} , Password : ${password}`)
+            this.props.LogIn(username, password)
+        }catch(err) {
+            console.log(err)
+        }
     }
 
     render()
