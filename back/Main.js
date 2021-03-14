@@ -11,14 +11,14 @@ app.use(express.json())
 
 console.log("Hi this is the back")
 
-const data = mysql.createConnection({
+const database = mysql.createConnection({
     host : "localhost",
     user : 'root',
     password : '',
     database : "batsoft"
 })
 
-data.connect(function(err)
+database.connect(function(err)
 {
     if(err)
     {
@@ -29,7 +29,7 @@ data.connect(function(err)
     console.log("Database connected!")
 })
 
-new Router(app,data)
+new Router(app,database)
 
 app.get('/', function(req,res)
 {

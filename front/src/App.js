@@ -39,9 +39,10 @@ class App extends Component{
       })
 
       let result = await res.json()
+      console.log(`Message from the server : ${result.message}`)
       if(result && result.success)
       {
-        this.setState({user : result.username})
+        this.setState({user : result.username, login : true})
         console.log(`Login successful, welcome ${this.state.user}`)
       }
       else
@@ -55,10 +56,9 @@ class App extends Component{
     }
   }
   
-  async handleLogOut()
+  async handleLogOut(un)
   {
-    /*this.setState({login: false})
-    console.log("Logged Out!")*/
+    console.log(`UN : ${un}`)
     try
     {
       let res = await fetch ('/logout', 
@@ -66,13 +66,19 @@ class App extends Component{
         method : 'post',
         headers: {
           'Accept' : 'application/json',
-          'Content-Type' : 'application.json'
-        }
+          'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify(
+        {
+          username: un
+        })
       })
 
       let result = await res.json()
+      console.log(`Server respons : ${result.message}`)
       if(result && result.success)
       {
+        this.state.user = ''
         console.log('Logout successful')
       }
       else
@@ -86,35 +92,13 @@ class App extends Component{
     }
 
   }
-/*
-  handleWrongPw(isTrue)
-  {
-    if(this.state.wrong_pw !== isTrue)
-    {
-      (isTrue)? this.setState({wrong_pw: true}) : this.setState({wrong_pw: false})
-    }
-    else console.log("No Change Needed")
-  }
-
-  handleWrongUn(isTrue)
-  { 
-    if(this.state.wrong_un !== isTrue)
-    {
-      (isTrue)? this.setState({wrong_un: true}) : this.setState({wrong_un: false})
-    }
-    else console.log("No Change Needed")
-  }
-*/
-
 
   render()
   {
     const login = this.state.login
-    //console.log(`login : ${login}`)
+    console.log(`login at begining of render : ${login}`)
     return(
       <Router>
-
-
         <div>
 
           {login === true ? <Redirect push to= "/main-menu"/> : <Redirect push to= "/"/>}
@@ -128,16 +112,15 @@ class App extends Component{
           </Route>
 
           <Route path = '/main-menu' exact> 
+          {login !== true ? <Redirect push to= "/"/> : console.log("logged in") }
             <div>
               <h1>You are logged in!</h1> 
               <h3>Main menu</h3>
-              <SubmitButton text = 'Log Out' method = {this.handleLogOut}/>
+              <SubmitButton text = 'Log Out' method = {() => this.handleLogOut("daniil")}/>
             </div>
           </Route> 
 
         </div> 
-        
-      
       </Router>
     )
     

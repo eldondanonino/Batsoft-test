@@ -5,9 +5,9 @@ import SubmitButton from './SubmitButton'
 class LoginForm extends Component
 {
 
-    componentDidUpdate()
+    componentDidMount()
     {
-        //console.log("LoginForm UPDATED")
+        this.ResetValue()
     }
 
     constructor(props)
