@@ -6,7 +6,7 @@ class SubmitButton extends Component
     {
         return(
             <div>
-                <button onClick = { () => this.props.method()}>
+                <button className = "button" onClick = { () => this.props.method()}>
                     {this.props.text}
                 </button>
             </div>

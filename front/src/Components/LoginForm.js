@@ -2,12 +2,14 @@ import { Component } from 'react'
 import InputField from './InputField'
 import SubmitButton from './SubmitButton'
 
+
 class LoginForm extends Component
 {
 
     componentDidMount()
     {
         this.ResetValue()
+        console.log("login form mounted")
     }
 
     constructor(props)

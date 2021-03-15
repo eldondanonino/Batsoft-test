@@ -4,6 +4,8 @@ class Router
     {
         this.login(app, database)
         this.logout(app, database)
+        this.getstatus(app,database)
+        this.signup(app,database)
     }
 
     login(app, database)
@@ -58,7 +60,6 @@ class Router
     {
         app.post('/logout', (req, res) => 
         {
-            console.log(req)
             let username = req.body.username
             console.log(`received logout request -> ${username}`)
 
@@ -81,7 +82,6 @@ class Router
                             res.json({success : false, message: "Cant update the login status"})
                             return false
                         }
-                        
                     })
                     res.json({success : true, message: "LOGGED OUT WITH DB"})
                     return true
@@ -91,6 +91,85 @@ class Router
                     return false
                 }
             })
+        })
+    }
+
+
+    signup(app, database)
+    {
+        app.post('/signup', (req,res) => 
+        {
+            let username = req.body.username
+            let password = req.body.password
+
+            console.log(`\nreceived signup request -> username : ${username} / password : ${password}`)
+
+            let cols = [username]
+            database.query('SELECT * FROM user WHERE username = ? LIMIT 1', cols, (err, data) => 
+            {
+                if(err)
+                {
+                    res.json({success : false, message: "cant login with the db"})
+                    return false
+                }
+
+                if(data && data.length === 0 )
+                {
+                    cols = `${[username]},${[password]},${0}`
+                    database.query('INSERT INTO user (username,password,logged) VALUES (?)', cols, (err,data) =>
+                    {
+                        if(err)
+                        {
+                            res.json({success : false, message: "Cant signup"})
+                            return false
+                        }
+                        
+                    })
+                    res.json({success : true, message: "SIGNED UP WITH DB", username: username})
+                    return true
+                }
+                else{
+                    res.json({success : false, message: "Already a user"})
+                    return false
+                }
+            })
+
+
+        })
+    }
+
+
+    getstatus(app, database)
+    {
+        app.post('/getstatus' , (req, res) => 
+        {
+            console.log(`received status request `)
+            database.query('SELECT * FROM user WHERE logged = 1 LIMIT 1', (err, data) =>
+            {
+                if(err)
+                {
+                    res.json({success : false, message: "cant get the user from the db"})
+                    return false
+                }
+
+
+                if(data && data.length === 1 )
+                {
+                    console.log(`Sending login ${ true } to front`)
+                    res.json(
+                        {
+                            success : true,
+                            message : "Sending status",
+                            username : data[0].username
+                        }
+                    )
+                }
+                else {
+                    res.json({success : false, message: "Couldnt find a logged in user"})
+                    return false
+                }
+            })
+            
         })
     }
 }
