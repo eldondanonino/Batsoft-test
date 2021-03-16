@@ -10,6 +10,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "express-mysql-session": "^2.1.5",
+    "lodash": "^4.17.21",
     "sql": "^0.78.0"
   }
 }
