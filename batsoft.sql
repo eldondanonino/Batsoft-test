@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 16, 2021 at 10:44 AM
+-- Generation Time: Mar 16, 2021 at 03:33 PM
 -- Server version: 5.7.31
 -- PHP Version: 7.3.21
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` varchar(50) COLLATE utf8_bin NOT NULL,
   `logged` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
 -- Dumping data for table `user`
@@ -42,7 +42,9 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`ID`, `username`, `password`, `logged`) VALUES
 (1, 'root', 'root', 0),
-(2, 'daniil', 'rosso', 0);
+(2, 'daniil', 'rosso', 0),
+(18, 'hello', 'bye', 0),
+(17, 'matt', 'gdd', 0);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

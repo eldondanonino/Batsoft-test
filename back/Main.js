@@ -1,40 +1,32 @@
-const express = require ('express') 
-const app = express()
-const path = require ('path')
-const mysql = require ('mysql')
-//const sess = require ('express-session')
-//const MySQLStore = require ('express-mysql-session') (sess)
-const Router = require('./Router')
+const express = require("express");
+const app = express();
+const path = require("path");
+const mysql = require("mysql");
+const Router = require("./Router");
 
-app.use(express.static(path.join(__dirname, 'build')))
-app.use(express.json())
+app.use(express.static(path.join(__dirname, "build")));
+app.use(express.json());
+new Router(app, database);
+const port = 3000;
 
-console.log("Hi this is the back")
-
+//Setting up the database for the app to use
 const database = mysql.createConnection({
-    host : "localhost",
-    user : 'root',
-    password : '',
-    database : "batsoft"
-})
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "batsoft",
+});
 
-database.connect(function(err)
-{
-    if(err)
-    {
-        console.log()
-        throw err
-        return false
-    }
-    console.log("Database connected!")
-})
+database.connect(function (err) {
+  if (err) {
+    console.log();
+    throw err;
+  }
+  console.log("Database connected!");
+});
 
-new Router(app,database)
+app.get("/", function (req, res) {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
-app.get('/', function(req,res)
-{
-    res.sendFile(path.join(__dirname, 'build', 'index.html'))
-})
-const port = 3000
-app.listen(port)
-//86,400,000 ms for 24 hrs
+app.listen(port);
