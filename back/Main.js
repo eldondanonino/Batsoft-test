@@ -35,6 +35,6 @@ app.get('/', function(req,res)
 {
     res.sendFile(path.join(__dirname, 'build', 'index.html'))
 })
-
-app.listen(3000)
+const port = 3000
+app.listen(port)
 //86,400,000 ms for 24 hrs

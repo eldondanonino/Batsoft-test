@@ -1,7 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600;700;1500&display=swap');
 
 body{
     background-color: #F2E3E6;
+    height: 100vh;
+    width: 100vw;
+}
+
+#root
+{
+    height: 100vh;
+    width: 100vw;
 }
 
 .title{
@@ -10,32 +18,84 @@ body{
     text-align: center;
     justify-content: center;
     color : #33201F;
-    /*border-radius: 15px;*/
     font-family: 'Poppins', sans-serif;
-    width: 50%;
-    height: auto;
+    font-size: 3.5em;
+    font-weight: 550;
 }
 
 .inputfield{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color : #F9F1F3;
+    background-color : #FFFFFF;
     color : #33201F;
     font-family: 'Poppins', sans-serif;
     border-radius: 15px;
-    margin: 0.2%;
+    margin-bottom: 17px;
+    padding: 3px;
+    height: 5vh;
+    width: 28vw;
+    font-size: 1.5em
 }
 
-.button{
-    background-color : #F9F1F3;
-    color : #33201F;
+.login-form
+{
+    display: flex;
+    flex-direction: column;
+    width : 800px;
+    height : 800px;
+    background-color: #F9F1F3;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 1px 3px #b98892;
+    border-radius: 15px;
+}
+
+.submit{
+    background-color : #33201F;
+    color : #FFFFFF;
+    border : none;
+    padding: 15px;
+    padding-left: 50px;
+    padding-right: 50px;
     font-family: 'Poppins', sans-serif;
-    border-radius: 5px;
-    margin: 0.2%;
+    border-radius: 35px;
+    margin-top: 30px;
     position: relative;
     align-items: center;
+    font-size: 1.5em;
+    font-weight: 1em;
 }
 
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
 
+.centerer
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 25vh;
+    width: 25vw;
 
+}
+
+.link
+{
+    position: fixed;
+    bottom: 1%;
+    right: 0.5%;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+    color : #FFFFFF;
+    background-color: #ff660d;
+    padding: 8px;
+    border-radius: 17px;
+}

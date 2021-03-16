@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import './App.css'
-import { BrowserRouter as Router, Redirect, Route} from 'react-router-dom'
+import { BrowserRouter as Router, Link, Redirect, Route} from 'react-router-dom'
 import SubmitButton from './Components/SubmitButton'
 import LoginForm from './Components/LoginForm'
-//import "./style.css"
+import "./style.css"
 
 class App extends Component{
   constructor()
@@ -13,7 +13,6 @@ class App extends Component{
     this.handleLogIn = this.handleLogIn.bind(this)
     this.handleSignup = this.handleSignup.bind(this)
     this.getStatus = this.getStatus.bind(this)
-    this.sleep = this.sleep.bind(this)
 
     this.state = {
       login: false,
@@ -23,19 +22,8 @@ class App extends Component{
 
   componentDidMount()
   {
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     this.getStatus() 
-    
   }
-  
-  sleep(milliseconds) {
-    const date = Date.now();
-    let currentDate = null;
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
-  }
-
 
   async handleLogIn(un, pw)
   {
@@ -60,12 +48,12 @@ class App extends Component{
       if(result && result.success)
       {
         this.setState({user : result.username, login : true})
-        console.log(`Login successful, welcome ${this.state.user}`)
+        alert(`Login successful, welcome ${this.state.user}`)
         this.setState({login : true})
       }
       else
       {
-        console.log('Error while logging in (not critical)')
+        alert(result.message)
       }
     }
     catch(err)
@@ -74,9 +62,9 @@ class App extends Component{
     }
   }
   
-  async handleLogOut(un)
+  async handleLogOut()
   {
-    console.log(`UN : ${un}`)
+    console.log('logging out...')
     try
     {
       let res = await fetch ('/logout', 
@@ -88,21 +76,20 @@ class App extends Component{
         },
         body : JSON.stringify(
         {
-          username: un
+          username: ""
         })
       })
 
       let result = await res.json()
-      console.log(`Server respons : ${result.message}`)
+      console.log(`Server response : ${result.message}`)
       if(result && result.success)
       {
-        this.setState({user : ""})
-        this.setState({login: false})
-        console.log('Logout successful')
+        this.getStatus()
+        alert('Logout successful')
       }
       else
       {
-        console.log('Error while logging out (not critical)')
+        alert(result.message)
       }
     }
     catch(err)
@@ -175,13 +162,12 @@ class App extends Component{
       console.log(`Message from the server : ${result.message}`)
       if(result && result.success)
       {
-        console.log(`Signup successful, welcome ${this.state.user}`)
+        alert(`Signup successful, try logging in!`)
       }
       else
       {
-        console.log('Error while signing up (not critical)')
+        alert(result.message)
       }
-      <Redirect push to = '/success'/>
     }
     catch(err)
     {
@@ -191,39 +177,40 @@ class App extends Component{
 
   render()
   {
-    //this.sleep(500)
-    //this.getStatus()
-    const login = this.state.login
-    console.log(login)
     return(
       <Router>
-        <div>
+        <div className = "container">
 
           <Route path = '/' exact>   
-          {/*login === true ? <Redirect push to= "/main-menu"/> : console.log("not logged in")*/ }
-          <div>
-              <h1 className = "title">LoginPage</h1> 
+          {() => this.getStatus()}
+          {this.state.login === true ? <Redirect push to= "/main-menu"/> : <></> }
+          <div className = "login-form">
+              <p className = "title">Login Page</p> 
               <LoginForm LogIn = {this.handleLogIn}/>
               <br/>
-              <a href = '/sign-up' >Sign up</a>
+              <Link className = "link" to ={"/sign-up"}>Sign up now!</Link>
           </div>
           </Route>
 
           <Route path = '/sign-up' exact>
-
-            <div> 
+          {() => this.getStatus()}
+          {this.state.login === true ? <Redirect push to= "/main-menu"/> : <></> }
+            <div className = "login-form"> 
               <h1 className = "title"> Signup page </h1>
               <LoginForm LogIn = {this.handleSignup} />
               <br/>
-              <a href = '/' >Main Menu</a>
+             <Link className ="link" to ={"/"}>Main Menu</Link>
             </div>
           </Route>
 
           <Route path = '/main-menu' exact> 
-          { /*login !== true ? <Redirect push to= "/"/> : console.log("logged in")*/ }
-            <div> 
+          {() => this.getStatus()}
+          { this.state.login !== true ? <Redirect push to= "/"/> : <></> }
+            <div className = "centerer"> 
               <h1 className = "title">Main menu</h1>
-              <SubmitButton text = 'Log Out' method = {() => this.handleLogOut("daniil")}/>
+              <p>Here is the exclusive content : a person that does not exist! </p>
+              <img src = 'https://thispersondoesnotexist.com/image'  width="600" height="600" />
+              <SubmitButton text = 'Log Out' method = {() => this.handleLogOut()}/>
             </div>
           </Route> 
 

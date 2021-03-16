@@ -60,12 +60,10 @@ class Router
     {
         app.post('/logout', (req, res) => 
         {
-            let username = req.body.username
-            console.log(`received logout request -> ${username}`)
+            console.log(`received logout request`)
 
-            let cols = [username]
 
-            database.query('SELECT * FROM user WHERE username = ? LIMIT 1', cols, (err, data) => 
+            database.query('SELECT * FROM user WHERE logged = 1 LIMIT 1', (err, data) => 
             {
                 if(err)
                 {
@@ -75,7 +73,7 @@ class Router
 
                 if(data && data.length === 1 )
                 {
-                    database.query('UPDATE user SET logged = 0 WHERE username = ?', cols, (err,data) =>
+                    database.query('UPDATE user SET logged = 0 WHERE username = ?', data[0].username, (err,data) =>
                     {
                         if(err)
                         {
@@ -105,6 +103,8 @@ class Router
             console.log(`\nreceived signup request -> username : ${username} / password : ${password}`)
 
             let cols = [username]
+           // let a = `'${[username]}','${[password]}',${0}`
+            console.log(cols)
             database.query('SELECT * FROM user WHERE username = ? LIMIT 1', cols, (err, data) => 
             {
                 if(err)
@@ -115,9 +115,11 @@ class Router
 
                 if(data && data.length === 0 )
                 {
-                    cols = `${[username]},${[password]},${0}`
-                    database.query('INSERT INTO user (username,password,logged) VALUES (?)', cols, (err,data) =>
+                    //console.log(`A = ${a}`)
+                    database.query("INSERT INTO user (username,password,logged) VALUES (? , ? , ?)", [username, password, 0], (err,data) =>
                     {
+                        //console.log("SIGNING UP WITH DB")
+                        //console.log(a)
                         if(err)
                         {
                             res.json({success : false, message: "Cant signup"})
@@ -125,7 +127,7 @@ class Router
                         }
                         
                     })
-                    res.json({success : true, message: "SIGNED UP WITH DB", username: username})
+                   res.json({success : true, message: "SIGNED UP WITH DB", username: username})
                     return true
                 }
                 else{

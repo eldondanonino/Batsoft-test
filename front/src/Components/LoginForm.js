@@ -9,7 +9,6 @@ class LoginForm extends Component
     componentDidMount()
     {
         this.ResetValue()
-        console.log("login form mounted")
     }
 
     constructor(props)
@@ -34,7 +33,7 @@ class LoginForm extends Component
                 [property]: value
             }
         )
-        console.log(`${property} : ${value}`)
+        //console.log(`${property} : ${value}`)
 
     }
 
@@ -60,20 +59,20 @@ class LoginForm extends Component
             {
                 if(!username) 
                 {
-                    console.log("Invalid request : wrong un") 
+                    alert("Invalid request : no username") 
                 }
                 
                 if(!password)
                 {
-                    console.log("Invalid request : wrong pw") 
+                    alert("Invalid request : no password") 
                 }
                 this.ResetValue()
                 return
             }
         
         try{
-            console.log(`Sending to the APP : \nUsername : ${username} , Password : ${password}`)
             this.props.LogIn(username, password)
+            this.ResetValue()
         }catch(err) {
             console.log(err)
         }
@@ -84,10 +83,10 @@ class LoginForm extends Component
         const username = this.state.username
         const password = this.state.password
         return(
-            <div>
+            <div className = "centerer">
                 <InputField placeholder = {'username'} type = 'text' value = {username ? this.state.username : ''} onChange = { (value) => this.SetValue('username', value) }/> 
-                <InputField placeholder = {'password'} type = 'password' value = {password ? this.state.password : ''} onChange = { (value) => this.SetValue('password', value) }/> 
-                <SubmitButton text = "Hi :) " method = {() => this.SendValues(username, password)}/>
+                <InputField placeholder = {'password'} type = 'password' value = {password ? this.state.password : ''} onChange = { (value) => this.SetValue('password', value) }/>
+                <SubmitButton text = "Login!" method = {() => this.SendValues(username, password)}/>
             </div>
         )
     }
