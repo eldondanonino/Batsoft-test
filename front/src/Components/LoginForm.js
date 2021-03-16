@@ -81,7 +81,7 @@ class LoginForm extends Component {
           onChange={(value) => this.SetValue("password", value)}
         />
         <SubmitButton
-          text="Login!"
+          text= {this.props.text}
           method={() => this.SendValues(username, password)}
         />
       </div>

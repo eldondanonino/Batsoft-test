@@ -159,7 +159,7 @@ class App extends Component {
             )}
             <div className="login-form">
               <p className="title">Login Page</p>
-              <LoginForm LogIn={this.handleLogIn} />
+              <LoginForm text = "Log in!" LogIn={this.handleLogIn} />
               <br />
               <Link className="link" to={"/sign-up"}>
                 Sign up now!
@@ -176,7 +176,7 @@ class App extends Component {
             )}
             <div className="login-form">
               <h1 className="title"> Signup page </h1>
-              <LoginForm LogIn={this.handleSignup} />
+              <LoginForm text = "Sign up!" LogIn={this.handleSignup} />
               <br />
               <Link className="link" to={"/"}>
                 Main Menu

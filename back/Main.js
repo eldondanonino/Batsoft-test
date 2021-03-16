@@ -6,7 +6,7 @@ const Router = require("./Router");
 
 app.use(express.static(path.join(__dirname, "build")));
 app.use(express.json());
-new Router(app, database);
+
 const port = 3000;
 
 //Setting up the database for the app to use
@@ -25,6 +25,7 @@ database.connect(function (err) {
   console.log("Database connected!");
 });
 
+new Router(app, database);
 app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
