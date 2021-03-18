@@ -157,7 +157,7 @@ class Router {
           if (err) {
             res.json({
               success: false,
-              message: "cant get the user from the db",
+              message: "Can't get the user from the db",
             });
             return false;
           }
@@ -172,7 +172,7 @@ class Router {
           } else {
             res.json({
               success: false,
-              message: "Couldnt find a logged in user",
+              message: "Couldn't find a logged in user",
             });
             return false;
           }
